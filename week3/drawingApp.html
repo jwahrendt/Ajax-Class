@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>BEST DRAWING APP EVER!</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+    <script>
+    window.onload = function() {
+        var stage = document.getElementById("stage");
+        var ctx = stage.getContext('2d');
+
+		$('#stage').mousedown(function(e) {
+			ctx.beginPath();
+			ctx.moveTo(e.pageX, e.pageY);
+		});
+		
+		$('#stage').mouseup(function(e) {
+			ctx.lineTo(e.pageX, e.pageY);
+			ctx.stroke();
+		});
+		
+		$('.color').click(function(e) {
+			//var color = this.id;
+			switch (this.id)
+			{
+			case "red":
+				ctx.strokeStyle = 'red';
+				break;
+			case "orange":
+				ctx.strokeStyle = 'orange';
+				break;
+			case "yellow":
+				ctx.strokeStyle = 'yellow';
+				break;
+			case "green":
+				ctx.strokeStyle = 'green';
+				break;
+			case "blue":
+				ctx.strokeStyle = 'blue';
+				break;
+			case "purple":
+				ctx.strokeStyle = 'purple';
+				break;
+			case "black":
+				ctx.strokeStyle = 'black';
+				break;
+			case "clear":
+				ctx.clearRect(0, 0, 800, 600);
+				break;
+			}
+		});
+    };
+    </script>
+	<style type="text/css">
+	body {
+		width: 800px;
+		background-color: #888;
+		margin: 0;
+		padding: 0;
+	}
+	canvas {
+		background-color: #fff;
+	}
+	.color {
+		width: 100px;
+		height: 30px;
+		float: left;
+	}
+	#red {
+		background-color: red;
+	}
+	#orange {
+		background-color: orange;
+	}
+	#yellow {
+		background-color: yellow;
+	}
+	#green {
+		background-color: green;
+	}
+	#blue {
+		background-color: blue;
+	}
+	#purple {
+		background-color: purple;
+	}
+	#black {
+		background-color: black;
+	}
+	#clear {
+		background-color: #fff;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+    <canvas id="stage" width="800" height="600"></canvas>
+	<div id="red" class="color"></div>
+	<div id="orange" class="color"></div>
+	<div id="yellow" class="color"></div>
+	<div id="green" class="color"></div>
+	<div id="blue" class="color"></div>
+	<div id="purple" class="color"></div>
+	<div id="black" class="color"></div>
+	<div id="clear" class="color">CLEAR</div>
+</body>
+</html>
