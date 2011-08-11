@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>chatchat</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script>
+		$(function() {
+			var preName = ['the', 'big', 'silly', 'red', 'liquid', 'peaceful', 'strained', 'floating', 'fuzzy', 'stellar'];
+			var postName = ['Cat', 'Planet', 'Ocean', 'Tree', 'Soul', 'Sky', 'Gin', 'Giraffe', 'Sparkle', 'Beer'];
+			
+			var ct = {};
+			ct.token = "d7a7dd3cbbb3717df36712c7a2efcc713f2a9ec9d18939a970eda327";
+			ct.messages = [];
+			ct.username = preName[Math.floor(Math.random()*10)] + postName[Math.floor(Math.random()*10)];
+			$('#newUser').val(ct.username);
+			
+			ct.timestamp = new String();
+			
+			ct.get = function(url, data) {
+				return $.getJSON("http://cutetypo.com" + url + "callback=?&token=" + ct.token, data);
+			};
+
+			
+			ct.get("/message/get?")
+				.then(dataSort)
+				.then(displayChat);
+			
+			function dataSort(data) {
+				$.each(data, function(i, item) {
+					ct.messages[i] = [item.username, item.message];
+					ct.timestamp = item.timestamp;
+				});
+			}
+			
+			
+			function displayChat() {
+				$.each(ct.messages, function (i, message) {
+					$('#messages').append('<div class="message"><div class="user">' + message[0] + '</div><div class="msg">' + message[1] + "</div></div>");
+				});
+			}
+			$('form').submit(function(event) {
+				event.preventDefault();
+					
+				if ($('#newMsg').val() != '') {
+					ct.messages = [];
+					
+					ct.get("/message/send?", {message: $('#newMsg').val(), username: $('#newUser').val()})
+					.then(ct.get("/message/get?since=" + ct.timestamp + "&")
+							.then(dataSort)
+							.then(displayChat)
+					);
+				
+				$('#newMsg').val('');
+				}
+			});
+		});
+	</script>
+	<style type="text/css">
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #ddd;
+	}
+	#messages {
+		width: 600px;
+		height: 400px;
+		overflow: auto;
+		margin: 10px auto;
+		background-color: #fff;
+	}
+	.message {
+		border-top: solid 1px #999;
+		border-bottom: solid 1px #ccc;
+		padding: 8px;
+	}
+	.user {
+		font-weight: bold;
+		color: #999;
+		font-size: 12px;
+	}
+	.msg {
+		font-size: 16px;
+	}
+	form {
+		width: 600px;
+		margin: 0 auto;
+	}
+	#newMsg {
+		width: 380px;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="messages">
+	</div>
+	<form>
+		<input type="text" name="newUser" id="newUser" />
+		<input type="text" name="newMsg" id="newMsg" />
+		<input type="submit" value="Submit" />
+	</form>
+</body>
+</html>
